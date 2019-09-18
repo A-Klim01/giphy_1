@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chicago Sports Athlete's</title>
+</head>
+<body>
+        
+    <button data-athlete="Michael Jordan">Michal Jordan 23</button>
+    <button data-athlete="Scottie Pippen">Scottie Pippen 33</button>
+    <button data-athlete="Walter Payton">Walter Payton 34</button>
+    <button data-athlete="Brian Urlacher">Brian Urlacher 54</button>
+    <button data-athlete="Jonathan Toews">Jonathan Toews 19</button>
+    <button data-athlete="Jeremy Roenick">Jeremy Roenick 27</button>
+    <button data-athlete="Anthony Rizzo">Anthony Rizzo44</button>
+    <button data-athlete="Mark Grace">Mark Grace 17</button>
+    <div id="gifs-appear-here">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+            // Click event listener to all buttons
+        $("button").on("click", function() {
+            // Grabbing and storing athlete "values"
+            var athlete =$(this).attr("data-person");
+
+            var queryURL = "https://aphttps://api.giphy.com/v1/gifs/" +
+            athlete + "?api_key=i3AIgHVMtoRJcBWXCyQ5urDH72kPs8l9&limit=10";
+
+        $.ajax( {
+            url: queryURL,
+            method: "GET"
+        })
+
+            .then(function(response){
+                console.log(queryURL);
+            }
+
+
+        }
+
+
+    </script>
+</body>
+
+</html>
