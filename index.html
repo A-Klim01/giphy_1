@@ -10,13 +10,12 @@
 
 <body>
 
-    <button data-athlete="Michael Jordan">Michal Jordan</button>
-    <button data-athlete="Scottie Pippen">Scottie Pippen</button>
-    <button data-athlete="Walter Payton">Walter Payton</button>
-    <button data-athlete="Brian Urlacher">Brian Urlacher</button>
-    <button data-athlete="Jonathan Toews">Jonathan Toews</button>
-    <button data-athlete="Jeremy Roenick">Jeremy Roenick
-    </button>
+    <button class="btn" data-athlete="Michael Jordan">Michal Jordan</button>
+    <button class="btn" data-athlete="Scottie Pippen">Scottie Pippen</button>
+    <button class="btn" data-athlete="Walter Payton">Walter Payton</button>
+    <button class="btn" data-athlete="Khalil Mack">Khalil Mack</button>
+    <button class="btn" data-athlete="Jonathan Toews">Jonathan Toews</button>
+    <button class="btn" data-athlete="Patrick Kane">Patrick Kane</button>
 
     <div id="gifs-appear-here">
     </div>
@@ -32,6 +31,7 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <script type="text/javascript">
 
         function renderButtons() {
@@ -40,54 +40,78 @@
             a.text(topic[i]);
             $("#buttonList").append(a);
 
-
-            ("#addbutton").on("click", function () {
-                var newAthlete = $("buttonInput").val().trim();
-                console.log("user added new athlete");
-                topic.push(newAthele);
-
-            });
-
-            // Click event listener to all buttons
-            $("button").on("click", function () {
-                // Grabbing and storing athlete "values"
-                var athlete = $(this).attr("data-person");
-
-                event.preventDefault();
-
-                var queryURL = "https://api.giphy.com/v1/gifs/?api_key=i3AIgHVMtoRJcBWXCyQ5urDH72kPs8l9";
-
-                //performing AJAX request with the queryURL
-                $.ajax({
-                    url: queryURL,
-                    method: "GET"
-                })
-
-                    .then(function (response) {
-                        console.log(queryURL);
-
-                        console.log(response)
-                        //storing data from AJAX request
-                        var results = response.data;
-                        // looping though results
-                        for (var i = 0; i < results.length; i++) {
-
-                            var athletediv = $("<div>");
-
-                            var p = $("<p>").text("Rating: " + results[i].rating);
-
-                            var athleteImage = $("<img>");
-
-                            athleteImage.attr("src", results[i].images.fixed_height.url);
-
-                            athleteDiv.append(p);
-                            athleteDiv.append(atheletImage);
-
-                            $("gifs-appear-here").prepend(athleteDiv);
-                        }
-                    });
-            });
         }
+        $("#addbutton").on("click", function () {
+            var newAthlete = $("buttonInput").val().trim();
+            console.log("user added new athlete");
+            topic.push(newAthlete);
+
+        });
+
+        // Click event listener to all buttons
+        $(".btn").on("click", function () {
+            console.log("in here")
+            // Grabbing and storing athlete "values"
+            var athlete = $(this).attr("data-athlete");
+
+            event.preventDefault();
+
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q="+athlete+"&api_key=i3AIgHVMtoRJcBWXCyQ5urDH72kPs8l9&limit=10";
+
+            //performing AJAX request with the queryURL
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (response) {
+                    console.log(queryURL);
+
+                    console.log(response)
+                    //storing data from AJAX request
+                    var results = response.data;
+                    // looping though results
+                    for (var i = 0; i < results.length; i++) {
+
+                        var athleteDiv = $("<div>");
+
+                        var p = $("<p>").text("Rating: " + results[i].rating);
+
+                        var athleteImage = $("<img>");
+                        athleteImage.addClass("gif-img");
+
+                            //change src to use still image
+                        athleteImage.attr("src", results[i].images.fixed_height_still.url);
+                        athleteImage.attr("data-still",results[i].images.fixed_height_still.url)
+                        athleteImage.attr("data-animate", results[i].images.fixed_height.url)
+                        athleteImage.attr("data-still", results[i])
+
+                        athleteDiv.append(p);
+                        athleteDiv.append(athleteImage);
+
+                        $("#gifs-appear-here").prepend(athleteDiv);
+                    }
+                });
+        });
+
+
+        //on click event for when still gif gets clicked
+        $(document).on("click",".gif-img",function(){
+        var state =$(this).attr("data-state");
+        
+        if(state ==="still") {
+            $(this).attr("src",$(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+
+        } else [
+            $(this).attr("src", $(this).attr("data-still")),
+            $(this).attr("data-state", "still"),
+        ]
+
+
+        }
+        
+
+        ,)
+
     </script>
 </body>
 
